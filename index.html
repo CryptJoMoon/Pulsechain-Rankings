@@ -5,6 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PulseChain Coin Rankings</title>
   <style>
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        display: none;
+      }
+      tr {
+        margin-bottom: 1rem;
+        border: 1px solid #292929;
+        border-radius: 8px;
+        background-color: var(--card);
+        padding: 0.5rem;
+      }
+      td {
+        text-align: left;
+        padding: 0.5rem;
+        position: relative;
+      }
+      td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+    }
     :root {
       --bg: #111;
       --card: #1a1a1a;
@@ -151,15 +178,15 @@
         }
 
         const tbody = document.querySelector('#coinTable tbody');
-        markets.forEach(token => {
+        markets.filter(token => token.market_cap_rank != null).forEach(token => {
           const row = document.createElement('tr');
           row.innerHTML =
-            '<td>' + (token.market_cap_rank || '—') + '</td>' +
-            '<td>' + token.name + '</td>' +
-            '<td>' + token.symbol.toUpperCase() + '</td>' +
-            '<td>' + (token.current_price != null ? '$' + token.current_price.toLocaleString() : '—') + '</td>' +
-            '<td>' + (token.total_volume != null ? '$' + token.total_volume.toLocaleString() : '—') + '</td>' +
-            '<td><a href="https://www.coingecko.com/en/coins/' + token.id + '" target="_blank">View</a></td>';
+            '<td data-label="Rank">' + (token.market_cap_rank || '—') + '</td>' +
+            '<td data-label="Name">' + token.name + '</td>' +
+            '<td data-label="Symbol">' + token.symbol.toUpperCase() + '</td>' +
+            '<td data-label="Price">' + (token.current_price != null ? '$' + token.current_price.toLocaleString() : '—') + '</td>' +
+            '<td data-label="24h Volume">' + (token.total_volume != null ? '$' + token.total_volume.toLocaleString() : '—') + '</td>' +
+            '<td data-label="Link"><a href="https://www.coingecko.com/en/coins/' + token.id + '" target="_blank">View</a></td>';
           tbody.appendChild(row);
         });
 

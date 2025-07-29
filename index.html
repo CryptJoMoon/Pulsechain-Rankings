@@ -51,8 +51,8 @@
             '<td>' + (token.market_cap_rank || '—') + '</td>' +
             '<td>' + token.name + '</td>' +
             '<td>' + token.symbol.toUpperCase() + '</td>' +
-            '<td>$' + token.current_price.toLocaleString() + '</td>' +
-            '<td>$' + token.total_volume.toLocaleString() + '</td>' +
+            '<td>' + (token.current_price != null ? '$' + token.current_price.toLocaleString() : '—') + '</td>' +
+            '<td>' + (token.total_volume != null ? '$' + token.total_volume.toLocaleString() : '—') + '</td>' +
             '<td><a href="https://www.coingecko.com/en/coins/' + token.id + '" target="_blank">View</a></td>';
           tbody.appendChild(row);
         });

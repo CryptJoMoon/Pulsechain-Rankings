@@ -38,7 +38,7 @@
         const listRes = await fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=true');
         const list = await listRes.json();
         const pulseCoins = list.filter(c => c.platforms?.pulsechain || c.id.includes('-pulsechain'));
-        const ids = pulseCoins.map(c => c.id).join(',');
+        const ids = pulseCoins.map(c => c.id).slice(0, 150).join(','); // Limit to 150 tokens
 
         if (!ids) {
           document.getElementById('status').innerText = 'No PulseChain tokens found.';
@@ -47,6 +47,11 @@
 
         const marketRes = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_asc`);
         const markets = await marketRes.json();
+
+        if (!markets || !Array.isArray(markets) || markets.length === 0) {
+          document.getElementById('status').innerText = 'No market data found. CoinGecko may have rejected the request.';
+          return;
+        }
 
         const tbody = document.querySelector('#coinTable tbody');
         markets.forEach(token => {

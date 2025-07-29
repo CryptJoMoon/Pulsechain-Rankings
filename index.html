@@ -5,57 +5,117 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PulseChain Coin Rankings</title>
   <style>
+    :root {
+      --bg: #111;
+      --card: #1a1a1a;
+      --text: #fff;
+      --accent: #ff007a;
+      --hover: #292929;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: #ffffff;
       margin: 0;
-      padding: 20px;
+      padding: 2rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
     }
-    h1 {
-      color: #ff007a;
+
+    .header, .footer {
       text-align: center;
-      font-size: 2em;
-      margin-bottom: 10px;
     }
+
+    .logo img {
+      height: 70px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+
+    h1 {
+      color: var(--accent);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
     #status {
       text-align: center;
-      margin-top: 20px;
-      color: #ff66cc;
+      margin: 2rem 0;
+      color: #aaa;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-top: 1rem;
+      background-color: var(--card);
+      border-radius: 8px;
+      overflow: hidden;
     }
+
     th, td {
-      padding: 12px;
-      border: 1px solid #292929;
+      padding: 1rem;
+      border-bottom: 1px solid var(--hover);
       text-align: center;
     }
+
     th {
-      background-color: #1f002a;
-      color: #ff66cc;
+      background-color: #1e1e1e;
+      color: var(--accent);
+      font-weight: 600;
     }
+
     tr:nth-child(even) {
-      background-color: #1a1a1a;
+      background-color: #141414;
     }
+
     tr:hover {
-      background-color: #2a003d;
+      background-color: var(--hover);
     }
+
     a {
       color: #66ccff;
       text-decoration: none;
       font-weight: bold;
     }
+
     a:hover {
       text-decoration: underline;
-      color: #ffffff;
+      color: var(--text);
+    }
+
+    .footer {
+      margin-top: 3rem;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .footer a {
+      color: var(--accent);
+      margin: 0 6px;
+    }
+
+    .footer a:hover {
+      color: #fff;
     }
   </style>
 </head>
 <body>
-  <h1>💎 PulseChain Coins Ranked by Market Cap</h1>
+  <div class="header">
+    <div class="logo">
+      <a href="https://simponpulse.com" target="_blank">
+        <img src="https://pls-estimator.vercel.app/Simp_PLS.png" alt="SIMP Logo"/>
+      </a>
+    </div>
+    <h1>PulseChain Coin Rankings</h1>
+  </div>
+
   <div id="status">Loading data...</div>
   <table id="coinTable" style="display:none;">
     <thead>
@@ -70,6 +130,13 @@
     </thead>
     <tbody></tbody>
   </table>
+
+  <div class="footer">
+    🔥 Powered by <a href="https://simponpulse.com" target="_blank">SIMP on Pulse</a><br/>
+    🌐 <a href="https://simponpulse.com" target="_blank">simponpulse.com</a> |
+    💬 <a href="https://t.me/SIMPonPLS" target="_blank">Telegram</a> |
+    🐦 <a href="https://x.com/SIMPonPulse" target="_blank">Twitter / X</a>
+  </div>
 
   <script>
     async function loadPulseChainCategory() {

@@ -59,10 +59,16 @@
       border: 1px solid var(--hover);
       border-radius: 10px;
       font-size: 0.95rem;
+      text-align: center;
     }
 
     .grid-item div {
       margin: 6px 0;
+    }
+
+    .grid-item img {
+      height: 32px;
+      margin-bottom: 6px;
     }
 
     a {
@@ -131,6 +137,7 @@
           const card = document.createElement('div');
           card.className = 'grid-item';
           card.innerHTML =
+            '<div><img src="' + token.image + '" alt="' + token.name + ' logo" /></div>' +
             '<div><strong>Rank:</strong> ' + token.market_cap_rank + '</div>' +
             '<div><strong>Name:</strong> ' + token.name + '</div>' +
             '<div><strong>Symbol:</strong> ' + token.symbol.toUpperCase() + '</div>' +

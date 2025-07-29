@@ -5,18 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PulseChain Coin Rankings</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #0d0d0d; color: #fff; margin: 0; padding: 20px; }
-    h1 { color: #ff007a; text-align: center; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #333; text-align: center; }
-    th { background-color: #1a1a1a; }
-    tr:nth-child(even) { background-color: #121212; }
-    a { color: #66ccff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #ff007a;
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    #status {
+      text-align: center;
+      margin-top: 20px;
+      color: #ff66cc;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #292929;
+      text-align: center;
+    }
+    th {
+      background-color: #1f002a;
+      color: #ff66cc;
+    }
+    tr:nth-child(even) {
+      background-color: #1a1a1a;
+    }
+    tr:hover {
+      background-color: #2a003d;
+    }
+    a {
+      color: #66ccff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
-  <h1>PulseChain Coins Ranked by Market Cap</h1>
+  <h1>💎 PulseChain Coins Ranked by Market Cap</h1>
   <div id="status">Loading data...</div>
   <table id="coinTable" style="display:none;">
     <thead>

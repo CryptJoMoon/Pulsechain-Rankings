@@ -5,59 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PulseChain Coin Rankings</title>
   <style>
-    #coinGrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-    .grid-item {
-      background-color: var(--card);
-      padding: 1rem;
-      border: 1px solid var(--hover);
-      border-radius: 10px;
-      font-size: 0.95rem;
-    }
-    .grid-item div {
-      margin: 6px 0;
-    }
-    @media (max-width: 768px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead tr {
-        display: none;
-      }
-      tr {
-        margin-bottom: 1rem;
-        border: 1px solid #292929;
-        border-radius: 8px;
-        background-color: var(--card);
-        padding: 0.5rem;
-      }
-      td {
-        text-align: left;
-        padding: 0.5rem;
-        position: relative;
-      }
-      td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        color: var(--accent);
-        display: block;
-        margin-bottom: 0.25rem;
-      }
-    }
     :root {
       --bg: #111;
       --card: #1a1a1a;
       --text: #fff;
       --accent: #ff007a;
       --hover: #292929;
-    }
-
-    * {
-      box-sizing: border-box;
     }
 
     body {
@@ -93,33 +46,23 @@
       color: #aaa;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
+    #coinGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .grid-item {
       background-color: var(--card);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    th, td {
       padding: 1rem;
-      border-bottom: 1px solid var(--hover);
-      text-align: center;
+      border: 1px solid var(--hover);
+      border-radius: 10px;
+      font-size: 0.95rem;
     }
 
-    th {
-      background-color: #1e1e1e;
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    tr:nth-child(even) {
-      background-color: #141414;
-    }
-
-    tr:hover {
-      background-color: var(--hover);
+    .grid-item div {
+      margin: 6px 0;
     }
 
     a {
@@ -160,19 +103,7 @@
   </div>
 
   <div id="status">Loading data...</div>
-  <div id="coinGrid" style="display:none;" class="grid"></div>
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Name</th>
-        <th>Symbol</th>
-        <th>Price</th>
-        <th>24h Volume</th>
-        <th>Link</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div id="coinGrid" style="display:none;"></div>
 
   <div class="footer">
     🔥 Powered by <a href="https://simponpulse.com" target="_blank">SIMP on Pulse</a><br/>
@@ -193,26 +124,25 @@
           return;
         }
 
-        const tbody = document.querySelector('#coinTable tbody');
-        markets.filter(token => token.market_cap_rank != null).forEach(token => {
-          const row = document.createElement('tr');
-          row.innerHTML = `<div><strong>Rank:</strong> \${token.market_cap_rank}</div>` +
-`<div><strong>Name:</strong> \${token.name}</div>` +
-`<div><strong>Symbol:</strong> \${token.symbol.toUpperCase()}</div>` +
-`<div><strong>Price:</strong> \${token.current_price != null ? '$' + token.current_price.toLocaleString() : '—'}</div>` +
-`<div><strong>24h Volume:</strong> \${token.total_volume != null ? '$' + token.total_volume.toLocaleString() : '—'}</div>` +
-`<div><a href='https://www.coingecko.com/en/coins/\${token.id}' target='_blank'>View</a></div>`;
-            '<td data-label="Rank">' + (token.market_cap_rank || '—') + '</td>' +
-            '<td data-label="Name">' + token.name + '</td>' +
-            '<td data-label="Symbol">' + token.symbol.toUpperCase() + '</td>' +
-            '<td data-label="Price">' + (token.current_price != null ? '$' + token.current_price.toLocaleString() : '—') + '</td>' +
-            '<td data-label="24h Volume">' + (token.total_volume != null ? '$' + token.total_volume.toLocaleString() : '—') + '</td>' +
-            '<td data-label="Link"><a href="https://www.coingecko.com/en/coins/' + token.id + '" target="_blank">View</a></td>';
-          grid.appendChild(row);
+        const ranked = markets.filter(token => token.market_cap_rank != null);
+        const grid = document.getElementById('coinGrid');
+        const grid = document.getElementById('coinGrid');
+
+        ranked.forEach(token => {
+          const card = document.createElement('div');
+          card.className = 'grid-item';
+          card.innerHTML =
+            '<div><strong>Rank:</strong> ' + token.market_cap_rank + '</div>' +
+            '<div><strong>Name:</strong> ' + token.name + '</div>' +
+            '<div><strong>Symbol:</strong> ' + token.symbol.toUpperCase() + '</div>' +
+            '<div><strong>Price:</strong> ' + (token.current_price != null ? '$' + token.current_price.toLocaleString() : '—') + '</div>' +
+            '<div><strong>24h Volume:</strong> ' + (token.total_volume != null ? '$' + token.total_volume.toLocaleString() : '—') + '</div>' +
+            '<div><a href="https://www.coingecko.com/en/coins/' + token.id + '" target="_blank">View</a></div>';
+          grid.appendChild(card);
         });
 
         document.getElementById('status').style.display = 'none';
-        document.getElementById('coinTable').style.display = 'table';
+        document.getElementById('coinGrid').style.display = 'grid';
       } catch (err) {
         document.getElementById('status').innerText = 'Error loading data.';
         console.error(err);

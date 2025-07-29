@@ -124,9 +124,8 @@
           return;
         }
 
+        const grid = document.getElementById('coinGrid');
         const ranked = markets.filter(token => token.market_cap_rank != null);
-        const grid = document.getElementById('coinGrid');
-        const grid = document.getElementById('coinGrid');
 
         ranked.forEach(token => {
           const card = document.createElement('div');

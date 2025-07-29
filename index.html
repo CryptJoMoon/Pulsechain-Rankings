@@ -33,37 +33,27 @@
   </table>
 
   <script>
-    async function loadPulseCoins() {
+    async function loadPulseChainCategory() {
       try {
-        const listRes = await fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=true');
-        const list = await listRes.json();
-        const pulseCoins = list.filter(c => c.platforms?.pulsechain || c.id.includes('-pulsechain'));
-        const ids = pulseCoins.map(c => c.id).slice(0, 150).join(','); // Limit to 150 tokens
-
-        if (!ids) {
-          document.getElementById('status').innerText = 'No PulseChain tokens found.';
-          return;
-        }
-
-        const marketRes = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_asc`);
-        const markets = await marketRes.json();
+        const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=pulsechain-ecosystem&order=market_cap_desc&per_page=250&page=1';
+        const res = await fetch(url);
+        const markets = await res.json();
 
         if (!markets || !Array.isArray(markets) || markets.length === 0) {
-          document.getElementById('status').innerText = 'No market data found. CoinGecko may have rejected the request.';
+          document.getElementById('status').innerText = 'No market data found for PulseChain.';
           return;
         }
 
         const tbody = document.querySelector('#coinTable tbody');
         markets.forEach(token => {
           const row = document.createElement('tr');
-          row.innerHTML = \`
-            <td>\${token.market_cap_rank || '—'}</td>
-            <td>\${token.name}</td>
-            <td>\${token.symbol.toUpperCase()}</td>
-            <td>$\${token.current_price?.toLocaleString()}</td>
-            <td>$\${token.total_volume?.toLocaleString()}</td>
-            <td><a href="https://www.coingecko.com/en/coins/\${token.id}" target="_blank">View</a></td>
-          \`;
+          row.innerHTML =
+            '<td>' + (token.market_cap_rank || '—') + '</td>' +
+            '<td>' + token.name + '</td>' +
+            '<td>' + token.symbol.toUpperCase() + '</td>' +
+            '<td>$' + token.current_price.toLocaleString() + '</td>' +
+            '<td>$' + token.total_volume.toLocaleString() + '</td>' +
+            '<td><a href="https://www.coingecko.com/en/coins/' + token.id + '" target="_blank">View</a></td>';
           tbody.appendChild(row);
         });
 
@@ -75,7 +65,7 @@
       }
     }
 
-    loadPulseCoins();
+    loadPulseChainCategory();
   </script>
 </body>
 </html>

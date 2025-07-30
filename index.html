@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,41 +17,69 @@
 
     body {
       margin: 0;
-      padding: 2rem;
+      padding: 1rem;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--bg);
       color: var(--text);
     }
 
-    .header, .footer {
+    .header {
       text-align: center;
     }
 
     h1 {
       color: var(--accent);
       font-size: 2rem;
-      margin-bottom: 0.5rem;
+      margin: 1rem 0 0.5rem;
     }
 
-    .toggle-container, .sort-container, .search-container {
+    .top-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 14px;
+      margin-bottom: 1rem;
+    }
+
+    .top-links a {
+      color: #66ccff;
+      text-decoration: none;
+    }
+
+    .top-links a:hover {
+      text-decoration: underline;
+      color: var(--text);
+    }
+
+    .filters {
       text-align: center;
-      margin: 1rem 0;
+      margin-top: 1rem;
     }
 
-    .search-container input {
-      padding: 0.5rem;
-      width: 200px;
-      font-size: 1rem;
+    .filters input[type="text"],
+    .filters select {
+      padding: 6px 10px;
+      border-radius: 5px;
+      border: none;
+      margin: 0 6px;
+      max-width: 160px;
     }
 
-    .fancy-toggle {
-      position: relative;
+    .toggle-container {
       display: inline-block;
-      width: 60px;
-      height: 34px;
+      position: relative;
+      width: 50px;
+      height: 24px;
+      vertical-align: middle;
+      margin-left: 10px;
     }
 
-    .fancy-toggle input { display: none; }
+    .toggle-container input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
 
     .slider {
       position: absolute;
@@ -60,16 +87,16 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background-color: #ccc;
       transition: .4s;
-      border-radius: 34px;
+      border-radius: 24px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
       background-color: white;
       transition: .4s;
       border-radius: 50%;
@@ -93,157 +120,134 @@
     .grid-item {
       background-color: var(--card);
       padding: 1rem;
-      border: 1px solid var(--hover);
       border-radius: 10px;
+      font-size: 0.95rem;
       text-align: center;
+    }
+
+    .token-logo {
+      height: 48px;
+      border-radius: 50%;
     }
 
     .price-change.positive { color: var(--green); }
     .price-change.negative { color: var(--red); }
 
-    .token-logo {
-      height: 48px;
-      border-radius: 50%;
-      margin-bottom: 8px;
-    }
-  
-a {
-  color: #66ccff;
-  text-decoration: none;
-  font-weight: bold;
-}
+    a { color: #66ccff; font-weight: bold; }
+    a:hover { color: var(--text); }
 
-a:hover {
-  text-decoration: underline;
-  color: #fff;
-}
-</style>
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 2rem;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
+  <div class="top-links">
+    🔗 <a href="https://pls-estimator.vercel.app/" target="_blank">PLS Moon Math Calculator</a>
+    🔗 <a href="https://liquidity-pools.vercel.app/" target="_blank">Liquidity Pool Explorer</a>
+    🔗 <a href="https://contract-creation.vercel.app/" target="_blank">Created Contracts</a>
+  </div>
+
   <div class="header">
     <h1>PulseChain Coin Rankings</h1>
-
-    <div style="margin-top: 10px;">
+    <div>
       <a href="https://simponpulse.com" target="_blank">
         <img src="https://pls-estimator.vercel.app/Simp_PLS.png" alt="SIMP Logo" style="height: 100px; animation: pulse 2s infinite;">
       </a>
     </div>
-
-    <div style="margin-top: 10px;">
-      <strong>Powered by SIMP on Pulse 🔥</strong><br>
-      🌐 <a href="https://simponpulse.com" target="_blank">simponpulse.com</a><br>
+    <div style="margin: 8px 0;">
+      🔥 Powered by <a href="https://simponpulse.com" target="_blank">SIMP on Pulse</a> —
       💬 <a href="https://t.me/SIMPonPLS" target="_blank">Telegram</a> |
       🐦 <a href="https://x.com/SIMPonPulse" target="_blank">Twitter/X</a>
     </div>
   </div>
 
-  <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search by name or symbol..." />
-  </div>
-
-  <div class="toggle-container">
-    <label>Include tokens w/ no reported MC</label>
-    <label class="fancy-toggle">
-      <input type="checkbox" id="showUnrankedToggle" />
-      <span class="slider"></span>
+  <div class="filters">
+    <input type="text" id="searchInput" placeholder="Search by name or symbol..." oninput="loadPulseChainCategory()" />
+    <select id="sortSelect" onchange="loadPulseChainCategory()">
+      <option value="rank">Sort by Rank</option>
+      <option value="marketcap">Market Cap</option>
+      <option value="change">24H Change</option>
+      <option value="volume">Volume</option>
+    </select>
+    <label style="margin-left:10px; font-size: 13px;">
+      Include tokens w/ no reported MC
+      <span class="toggle-container">
+        <input type="checkbox" id="showUnranked" onchange="loadPulseChainCategory()" />
+        <span class="slider"></span>
+      </span>
     </label>
   </div>
 
-  <div class="sort-container">
-    <label for="sortSelect">Sort by:</label>
-    <select id="sortSelect">
-      <option value="rank">Rank</option>
-      <option value="market_cap">Market Cap</option>
-      <option value="change">24H % Change</option>
-      <option value="volume">Volume</option>
-    </select>
-  </div>
-
-  <div id="status">Loading data...</div>
+  <div id="status" style="text-align:center; margin-top:1rem;">Loading data...</div>
   <div id="coinGrid" style="display:none;"></div>
 
-  <script>
-    let marketData = [];
+  <div class="footer">
+    🌐 <a href="https://simponpulse.com" target="_blank">simponpulse.com</a>
+  </div>
 
+  <script>
     async function loadPulseChainCategory() {
       try {
-        document.getElementById('status').style.display = 'block';
-        document.getElementById('coinGrid').style.display = 'none';
-        document.getElementById('coinGrid').innerHTML = '';
+        const status = document.getElementById('status');
+        const grid = document.getElementById('coinGrid');
+        const showUnranked = document.getElementById('showUnranked').checked;
+        const sortBy = document.getElementById('sortSelect').value;
+        const search = document.getElementById('searchInput').value.toLowerCase();
+
+        status.style.display = 'block';
+        grid.style.display = 'none';
+        grid.innerHTML = '';
 
         const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=pulsechain-ecosystem&order=market_cap_desc&per_page=250&page=1';
         const res = await fetch(url);
-        marketData = await res.json();
+        const markets = await res.json();
 
-        renderCoins();
+        let tokens = markets.filter(token =>
+          (showUnranked || token.market_cap_rank != null) &&
+          (!search || token.name.toLowerCase().includes(search) || token.symbol.toLowerCase().includes(search))
+        );
+
+        tokens.sort((a, b) => {
+          if (sortBy === 'marketcap') return (b.market_cap || 0) - (a.market_cap || 0);
+          if (sortBy === 'change') return (b.price_change_percentage_24h || 0) - (a.price_change_percentage_24h || 0);
+          if (sortBy === 'volume') return (b.total_volume || 0) - (a.total_volume || 0);
+          return (a.market_cap_rank || 999999) - (b.market_cap_rank || 999999);
+        });
+
+        tokens.forEach(token => {
+          const change = token.price_change_percentage_24h;
+          const changeClass = change > 0 ? 'positive' : (change < 0 ? 'negative' : '');
+          const price = token.current_price < 0.01 ? (token.current_price ?? 0).toFixed(8) : token.current_price.toLocaleString();
+
+          const card = document.createElement('div');
+          card.className = 'grid-item';
+          card.innerHTML = `
+            <div><img src="${token.image}" class="token-logo" alt="${token.name}" /></div>
+            <div><strong>Rank:</strong> ${token.market_cap_rank ?? "|"}</div>
+            <div><strong>Name:</strong> ${token.name}</div>
+            <div><strong>Symbol:</strong> ${token.symbol.toUpperCase()}</div>
+            <div><strong>Price:</strong> $${price}</div>
+            <div><strong>24H Change:</strong> <span class="price-change ${changeClass}">${change != null ? change.toFixed(2) + '%' : 'N/A'}</span></div>
+            <div><strong>Market Cap:</strong> $${(token.market_cap || 0).toLocaleString()}</div>
+            <div><strong>Volume:</strong> $${(token.total_volume || 0).toLocaleString()}</div>
+            <div style="margin-top:8px;">
+              <a href="https://www.coingecko.com/en/coins/${token.id}" target="_blank">Coin Gecko</a>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        status.style.display = 'none';
+        grid.style.display = 'grid';
       } catch (err) {
         document.getElementById('status').innerText = 'Error loading data.';
         console.error(err);
       }
     }
-
-    function renderCoins() {
-      const showUnranked = document.getElementById('showUnrankedToggle').checked;
-      const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-      const sortType = document.getElementById('sortSelect').value;
-
-      let filtered = marketData.filter(token => {
-        const matchesRank = showUnranked || token.market_cap_rank != null;
-        const matchesSearch = token.name.toLowerCase().includes(searchQuery) || token.symbol.toLowerCase().includes(searchQuery);
-        return matchesRank && matchesSearch;
-      });
-
-      filtered.sort((a, b) => {
-        switch (sortType) {
-          case 'rank':
-            return (a.market_cap_rank || Infinity) - (b.market_cap_rank || Infinity);
-          case 'market_cap':
-            return (b.market_cap || 0) - (a.market_cap || 0);
-          case 'change':
-            return (b.price_change_percentage_24h || 0) - (a.price_change_percentage_24h || 0);
-          case 'volume':
-            return (b.total_volume || 0) - (a.total_volume || 0);
-          default:
-            return 0;
-        }
-      });
-
-      const grid = document.getElementById('coinGrid');
-      grid.innerHTML = '';
-
-      filtered.forEach(token => {
-        const price = token.current_price != null
-          ? (token.current_price < 0.01 ? token.current_price.toFixed(8) : token.current_price.toLocaleString())
-          : 'N/A';
-
-        const change = token.price_change_percentage_24h;
-        const changeClass = change > 0 ? 'positive' : (change < 0 ? 'negative' : '');
-
-        const div = document.createElement('div');
-        div.className = 'grid-item';
-        div.innerHTML = `
-          <div><img src="${token.image}" alt="${token.name} logo" class="token-logo" /></div>
-          <div><strong>Rank:</strong> ${token.market_cap_rank ?? '—'}</div>
-          <div><strong>Name:</strong> ${token.name}</div>
-          <div><strong>Symbol:</strong> ${token.symbol.toUpperCase()}</div>
-          <div><strong>Price:</strong> $${price}</div>
-          <div><strong>24H Change:</strong> <span class="price-change ${changeClass}">${change != null ? change.toFixed(2) + '%' : 'N/A'}</span></div>
-          <div><strong>Market Cap:</strong> $${(token.market_cap || 0).toLocaleString()}</div>
-          <div><strong>Volume:</strong> $${(token.total_volume || 0).toLocaleString()}</div>
-          <div style="margin-top:8px;">
-            <a href="https://www.coingecko.com/en/coins/${token.id}" target="_blank">Coin Gecko</a>
-          </div>
-        `;
-        grid.appendChild(div);
-      });
-
-      document.getElementById('status').style.display = 'none';
-      document.getElementById('coinGrid').style.display = 'grid';
-    }
-
-    document.getElementById('searchInput').addEventListener('input', renderCoins);
-    document.getElementById('sortSelect').addEventListener('change', renderCoins);
-    document.getElementById('showUnrankedToggle').addEventListener('change', renderCoins);
 
     loadPulseChainCategory();
   </script>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,10 +33,6 @@
       transition: transform 0.3s ease;
     }
 
-    .logo img:hover {
-      transform: scale(1.05);
-    }
-
     h1 {
       color: var(--accent);
       font-size: 2rem;
@@ -64,19 +61,9 @@
       text-align: center;
     }
 
-    .grid-item div {
-      margin: 6px 0;
-    }
-
     .token-logo {
       height: 64px;
       border-radius: 50%;
-    }
-
-    .links img {
-      height: 28px;
-      margin: 0 8px;
-      vertical-align: middle;
     }
 
     .price-change.positive {
@@ -112,116 +99,168 @@
     .footer a:hover {
       color: #fff;
     }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      margin-left: 10px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .controls label {
+      margin-right: 12px;
+    }
+
+    .controls select {
+      padding: 4px 10px;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--hover);
+      border-radius: 6px;
+      margin-left: 10px;
+    }
   </style>
 </head>
 <body>
-
-
-  </div>
-</div>
-
-
   <div class="header">
-    <div class="logo">
-      <a href="https://simponpulse.com" target="_blank">
-        </a>
-    </div>
     <h1>PulseChain Coin Rankings</h1>
+    <div style="text-align: center; margin-top: 15px;">
+      <a href="https://simponpulse.com" target="_blank">
+        <img src="https://pls-estimator.vercel.app/Simp_PLS.png" alt="SIMP Logo" style="height: 100px; animation: pulse 2s infinite;">
+      </a>
+    </div>
+    <div style="text-align: center; margin-top: 10px;">
+      <strong>Powered by SIMP on Pulse 🔥</strong><br>
+      🌐 <a href="https://simponpulse.com" target="_blank">simponpulse.com</a><br>
+      💬 <a href="https://t.me/SIMPonPLS" target="_blank">Telegram</a> |
+      🐦 <a href="https://x.com/SIMPonPulse" target="_blank">Twitter/X</a>
+    </div>
+    <div class="controls">
+      <label>Include tokens w/ no reported MC
+        <label class="switch">
+          <input type="checkbox" id="showUnrankedToggle" onchange="loadData()">
+          <span class="slider"></span>
+        </label>
+      </label>
 
-
-<div style="text-align: center; margin-top: 15px;">
-  <a href="https://simponpulse.com" target="_blank">
-    <img src="https://pls-estimator.vercel.app/Simp_PLS.png" alt="SIMP Logo" style="height: 100px; animation: pulse 2s infinite;">
-  </a>
-</div>
-
-<style>
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-</style>
-
-
-<style>
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-</style>
-
-
-<div style="text-align: center; margin-top: 10px;">
-  <strong>Powered by SIMP on Pulse 🔥</strong><br>
-  🌐 <a href="https://simponpulse.com" target="_blank" style="color: #66ccff;">simponpulse.com</a><br>
-  💬 <a href="https://t.me/SIMPonPLS" target="_blank" style="color: #66ccff;">Telegram</a> |
-  🐦 <a href="https://x.com/SIMPonPulse" target="_blank" style="color: #66ccff;">Twitter/X</a>
-</div>
-
-
+      <label for="sortSelect">Sort by:
+        <select id="sortSelect" onchange="loadData()">
+          <option value="rank">Rank</option>
+          <option value="marketcap">Market Cap</option>
+          <option value="change">24H Change</option>
+          <option value="volume">Volume</option>
+        </select>
+      </label>
+    </div>
   </div>
 
   <div id="status">Loading data...</div>
   <div id="coinGrid" style="display:none;"></div>
 
-  <div class="footer">
-    🔥 Powered by <a href="https://simponpulse.com" target="_blank">SIMP on Pulse</a><br/>
-    🌐 <a href="https://simponpulse.com" target="_blank">simponpulse.com</a> |
-    💬 <a href="https://t.me/SIMPonPLS" target="_blank">Telegram</a> |
-    🐦 <a href="https://x.com/SIMPonPulse" target="_blank">Twitter / X</a>
-  </div>
-
   <script>
-    async function loadPulseChainCategory() {
-      try {
-        const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=pulsechain-ecosystem&order=market_cap_desc&per_page=250&page=1';
-        const res = await fetch(url);
-        const markets = await res.json();
+    let allTokens = [];
 
-        if (!markets || !Array.isArray(markets) || markets.length === 0) {
-          document.getElementById('status').innerText = 'No market data found for PulseChain.';
-          return;
-        }
-
-        const grid = document.getElementById('coinGrid');
-        const ranked = markets.filter(token => token.market_cap_rank != null);
-
-        ranked.forEach(token => {
-          const card = document.createElement('div');
-          card.className = 'grid-item';
-
-          const change = token.price_change_percentage_24h;
-          const changeClass = change > 0 ? 'positive' : (change < 0 ? 'negative' : '');
-
-          card.innerHTML = `
-  <div><img src="${token.image}" alt="${token.name} logo" style="height: 48px; margin-bottom: 6px;" /></div>
-  <div><strong>Rank:</strong> ${token.market_cap_rank}</div>
-  <div><strong>Name:</strong> ${token.name}</div>
-  <div><strong>Symbol:</strong> ${token.symbol.toUpperCase()}</div>
-  <div><strong>Price:</strong> $${token.current_price < 0.01 ? token.current_price.toFixed(8) : token.current_price.toLocaleString()}</div>
-  <div><strong>24H Change:</strong> ${token.price_change_percentage_24h != null ? (token.price_change_percentage_24h >= 0 ? '<span style="color:lime">' + token.price_change_percentage_24h.toFixed(2) + '%</span>' : '<span style="color:red">' + token.price_change_percentage_24h.toFixed(2) + '%</span>') : 'N/A'}</div>
-  <div><strong>Market Cap:</strong> $${token.market_cap.toLocaleString()}</div>
-  <div><strong>Volume:</strong> $${token.total_volume.toLocaleString()}</div>
-  <div style="display:flex; justify-content:center; gap:8px; margin-top:8px;">
-    <a href="https://www.coingecko.com/en/coins/${token.id}" target="_blank">Coin Gecko</a>
-    
-    
-  </div>`;
-
-          grid.appendChild(card);
-        });
-
-        document.getElementById('status').style.display = 'none';
-        document.getElementById('coinGrid').style.display = 'grid';
-      } catch (err) {
-        document.getElementById('status').innerText = 'Error loading data.';
-        console.error(err);
-      }
+    async function fetchData() {
+      const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=pulsechain-ecosystem&order=market_cap_desc&per_page=250&page=1';
+      const res = await fetch(url);
+      const data = await res.json();
+      allTokens = data;
     }
 
-    loadPulseChainCategory();
+    function loadData() {
+      const grid = document.getElementById('coinGrid');
+      const status = document.getElementById('status');
+      const showUnranked = document.getElementById('showUnrankedToggle').checked;
+      const sortBy = document.getElementById('sortSelect').value;
+
+      let filtered = allTokens.filter(t => showUnranked || t.market_cap_rank != null);
+
+      filtered.sort((a, b) => {
+        if (sortBy === 'rank') return (a.market_cap_rank ?? 999999) - (b.market_cap_rank ?? 999999);
+        if (sortBy === 'marketcap') return (b.market_cap ?? 0) - (a.market_cap ?? 0);
+        if (sortBy === 'change') return (b.price_change_percentage_24h ?? -9999) - (a.price_change_percentage_24h ?? -9999);
+        if (sortBy === 'volume') return (b.total_volume ?? 0) - (a.total_volume ?? 0);
+      });
+
+      grid.innerHTML = '';
+      filtered.forEach(t => {
+        const price = t.current_price < 0.01 ? t.current_price.toFixed(8) : t.current_price.toLocaleString();
+        const changeClass = t.price_change_percentage_24h > 0 ? 'positive' : (t.price_change_percentage_24h < 0 ? 'negative' : '');
+        const change = t.price_change_percentage_24h != null ? `<span class="price-change ${changeClass}">${t.price_change_percentage_24h.toFixed(2)}%</span>` : 'N/A';
+
+        const card = document.createElement('div');
+        card.className = 'grid-item';
+        card.innerHTML = `
+          <div><img src="${t.image}" class="token-logo" /></div>
+          <div><strong>Rank:</strong> ${t.market_cap_rank ?? '—'}</div>
+          <div><strong>Name:</strong> ${t.name}</div>
+          <div><strong>Symbol:</strong> ${t.symbol.toUpperCase()}</div>
+          <div><strong>Price:</strong> $${price}</div>
+          <div><strong>24H Change:</strong> ${change}</div>
+          <div><strong>Market Cap:</strong> $${(t.market_cap ?? 0).toLocaleString()}</div>
+          <div><strong>Volume:</strong> $${(t.total_volume ?? 0).toLocaleString()}</div>
+          <div style="margin-top:8px;">
+            <a href="https://www.coingecko.com/en/coins/${t.id}" target="_blank">Coin Gecko</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      status.style.display = 'none';
+      grid.style.display = 'grid';
+    }
+
+    async function init() {
+      await fetchData();
+      loadData();
+    }
+
+    init();
   </script>
 </body>
 </html>

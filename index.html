@@ -11,6 +11,8 @@
       --text: #fff;
       --accent: #ff007a;
       --hover: #292929;
+      --green: #00d084;
+      --red: #ff4d4f;
     }
 
     body {
@@ -48,7 +50,7 @@
 
     #coinGrid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1rem;
       margin-top: 2rem;
     }
@@ -66,9 +68,23 @@
       margin: 6px 0;
     }
 
-    .grid-item img {
-      height: 32px;
-      margin-bottom: 6px;
+    .token-logo {
+      height: 64px;
+      border-radius: 50%;
+    }
+
+    .links img {
+      height: 28px;
+      margin: 0 8px;
+      vertical-align: middle;
+    }
+
+    .price-change.positive {
+      color: var(--green);
+    }
+
+    .price-change.negative {
+      color: var(--red);
     }
 
     a {
@@ -136,14 +152,25 @@
         ranked.forEach(token => {
           const card = document.createElement('div');
           card.className = 'grid-item';
-          card.innerHTML =
-            '<div><img src="' + token.image + '" alt="' + token.name + ' logo" /></div>' +
-            '<div><strong>Rank:</strong> ' + token.market_cap_rank + '</div>' +
-            '<div><strong>Name:</strong> ' + token.name + '</div>' +
-            '<div><strong>Symbol:</strong> ' + token.symbol.toUpperCase() + '</div>' +
-            '<div><strong>Price:</strong> ' + (token.current_price != null ? '$' + token.current_price.toLocaleString() : '—') + '</div>' +
-            '<div><strong>24h Volume:</strong> ' + (token.total_volume != null ? '$' + token.total_volume.toLocaleString() : '—') + '</div>' +
-            '<div><a href="https://www.coingecko.com/en/coins/' + token.id + '" target="_blank">View</a></div>';
+
+          const change = token.price_change_percentage_24h;
+          const changeClass = change > 0 ? 'positive' : (change < 0 ? 'negative' : '');
+
+          card.innerHTML = `
+  <div><img src="${token.image}" alt="${token.name} logo" style="height: 48px; margin-bottom: 6px;" /></div>
+  <div><strong>Rank:</strong> ${token.market_cap_rank}</div>
+  <div><strong>Name:</strong> ${token.name}</div>
+  <div><strong>Symbol:</strong> ${token.symbol.toUpperCase()}</div>
+  <div><strong>Price:</strong> $${token.current_price < 0.01 ? token.current_price.toFixed(8) : token.current_price.toLocaleString()}</div>
+  <div><strong>24H Change:</strong> ${token.price_change_percentage_24h != null ? (token.price_change_percentage_24h >= 0 ? '<span style="color:lime">' + token.price_change_percentage_24h.toFixed(2) + '%</span>' : '<span style="color:red">' + token.price_change_percentage_24h.toFixed(2) + '%</span>') : 'N/A'}</div>
+  <div><strong>Market Cap:</strong> $${token.market_cap.toLocaleString()}</div>
+  <div><strong>Volume:</strong> $${token.total_volume.toLocaleString()}</div>
+  <div style="display:flex; justify-content:center; gap:8px; margin-top:8px;">
+    <a href="https://www.coingecko.com/en/coins/${token.id}" target="_blank">Coin Gecko</a>
+    
+    
+  </div>`;
+
           grid.appendChild(card);
         });
 

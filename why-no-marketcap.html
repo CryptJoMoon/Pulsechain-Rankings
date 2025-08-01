@@ -5,46 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Why No Market Cap or Rank?</title>
   <style>
+    :root {
+      --bg: #111;
+      --card: #1a1a1a;
+      --text: #fff;
+      --accent: #ff007a;
+      --link: #66ccff;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 2rem;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 2rem;
       max-width: 800px;
+      margin: auto;
     }
+
     h1 {
-      color: #c026d3;
+      color: var(--accent);
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
     }
+
     h2 {
       margin-top: 1.5rem;
-      color: #6b21a8;
+      font-size: 1.2rem;
+      color: var(--link);
     }
+
     p {
       margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: #888;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <h1>Why Does This Token Have No Market Cap or Rank?</h1>
+  <h1>Why is there no Market Cap or Rank?</h1>
 
-  <p>Some tokens on CoinGecko show no market cap or ranking. This is usually due to one of the following reasons:</p>
+  <p>If you're seeing a token without a market cap or global rank, don't worry — it's common, especially for new or smaller tokens.</p>
 
   <h2>1. No Circulating Supply Provided</h2>
-  <p>CoinGecko requires a public circulating supply to calculate market cap. If the project hasn’t provided this, market cap and rank will be blank.</p>
+  <p>CoinGecko needs the circulating supply to calculate market cap. If the project hasn’t submitted this info, it can’t be shown.</p>
 
   <h2>2. New or Illiquid Token</h2>
-  <p>If the token is recently launched or trades on low-liquidity pools, CoinGecko may not list full metrics until more reliable data is available.</p>
+  <p>If a token is newly listed or only trades on a small DEX with low volume, CoinGecko may delay market cap/rank visibility.</p>
 
-  <h2>3. Missing or Incorrect Token Data</h2>
-  <p>If contract details, logos, or metadata are missing or wrong, CoinGecko may disable full tracking until it’s corrected.</p>
+  <h2>3. Missing or Incomplete Metadata</h2>
+  <p>If the contract, supply, or team info is incomplete or misconfigured, CoinGecko may hide ranking temporarily.</p>
 
-  <h2>4. Wrapped, Derivative, or Inactive Asset</h2>
-  <p>Some tokens represent staked assets or are inactive, and therefore don’t get a separate rank or market cap.</p>
+  <h2>4. Wrapped, Derivative, or Pegged Assets</h2>
+  <p>Tokens that represent other assets (e.g. staked or wrapped tokens) may not get separate rankings.</p>
 
-  <h2>5. Under Review</h2>
-  <p>CoinGecko may be manually reviewing the token for eligibility, especially if it's a recent listing or suspected spam.</p>
+  <h2>5. Under Manual Review</h2>
+  <p>CoinGecko sometimes reviews tokens before assigning a market cap/rank — especially if it's new or flagged for spam/scam checks.</p>
 
-  <p>If you're a developer or token team, submit missing info through the <a href="https://www.coingecko.com/en/request" target="_blank">CoinGecko Request Form</a>.</p>
+  <p>If you're the token team, you can submit fixes using the <a href="https://www.coingecko.com/en/request" target="_blank">CoinGecko Request Form</a>.</p>
 
-  <hr />
-  <p><a href="/">← Back to Rankings</a></p>
+  <div class="back-link">
+    ← <a href="/">Back to PulseChain Coin Rankings</a>
+  </div>
+
+  <div class="footer">
+    Powered by SIMP on Pulse • Not financial advice • Just vibes
+  </div>
 </body>
 </html>

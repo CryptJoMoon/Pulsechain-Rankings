@@ -227,12 +227,12 @@
           card.className = 'grid-item';
           card.innerHTML = `
             <div><img src="${token.image}" class="token-logo" alt="${token.name}" /></div>
-            <div><strong>Rank:</strong> ${token.market_cap_rank ?? "|"} ${token.market_cap_rank == null ? '<div><a href="/why-no-marketcap.html" target="_blank">Why no market cap/rank?</a></div>' : ''}</div>
+            <div><strong>Rank:</strong> ${token.market_cap_rank ?? "|"} ${token.market_cap_rank == null ? '<div><a href="/why-no-marketcap.html" target="_self">Why no market cap/rank?</a></div>' : ''}</div>
             <div><strong>Name:</strong> ${token.name}</div>
             <div><strong>Symbol:</strong> ${token.symbol.toUpperCase()}</div>
             <div><strong>Price:</strong> $${price}</div>
             <div><strong>24H Change:</strong> <span class="price-change ${changeClass}">${change != null ? change.toFixed(2) + '%' : 'N/A'}</span></div>
-            <div><strong>Market Cap:</strong> $${(token.market_cap || 0).toLocaleString()} ${!token.market_cap ? '<div><a href="/why-no-marketcap.html" target="_blank">Why no market cap/rank?</a></div>' : ''}</div>
+            <div><strong>Market Cap:</strong> $${(token.market_cap || 0).toLocaleString()} ${!token.market_cap ? '<div><a href="/why-no-marketcap.html" target="_self">Why no market cap/rank?</a></div>' : ''}</div>
             <div><strong>Volume:</strong> $${(token.total_volume || 0).toLocaleString()}</div>
             <div style="margin-top:8px;">
               <a href="https://www.coingecko.com/en/coins/${token.id}" target="_blank">Coin Gecko</a>
